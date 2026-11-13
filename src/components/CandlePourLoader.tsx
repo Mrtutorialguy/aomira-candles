@@ -123,40 +123,40 @@ export function CandlePourLoader() {
           <defs>
             {/* Molten wax stream gradient */}
             <linearGradient id="moltenStream" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#FCD34D" />
-              <stop offset="45%" stop-color="#F59E0B" />
-              <stop offset="85%" stop-color="#D97706" />
-              <stop offset="100%" stop-color="#C4682B" />
+              <stop offset="0%" stopColor="#FCD34D" />
+              <stop offset="45%" stopColor="#F59E0B" />
+              <stop offset="85%" stopColor="#D97706" />
+              <stop offset="100%" stopColor="#C4682B" />
             </linearGradient>
 
             {/* Filled wax pool gradient */}
             <linearGradient id="waxPool" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#FCE7B2" />
-              <stop offset="25%" stop-color="#F5B963" />
-              <stop offset="70%" stop-color="#D97736" />
-              <stop offset="100%" stop-color="#9A4518" />
+              <stop offset="0%" stopColor="#FCE7B2" />
+              <stop offset="25%" stopColor="#F5B963" />
+              <stop offset="70%" stopColor="#D97736" />
+              <stop offset="100%" stopColor="#9A4518" />
             </linearGradient>
 
             {/* Amber glass vessel gradient */}
             <linearGradient id="vesselGlass" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#6E3816" stop-opacity="0.35" />
-              <stop offset="20%" stop-color="#A55420" stop-opacity="0.15" />
-              <stop offset="80%" stop-color="#A55420" stop-opacity="0.15" />
-              <stop offset="100%" stop-color="#6E3816" stop-opacity="0.35" />
+              <stop offset="0%" stopColor="#6E3816" stopOpacity="0.35" />
+              <stop offset="20%" stopColor="#A55420" stopOpacity="0.15" />
+              <stop offset="80%" stopColor="#A55420" stopOpacity="0.15" />
+              <stop offset="100%" stopColor="#6E3816" stopOpacity="0.35" />
             </linearGradient>
 
             {/* Flame gradients */}
             <radialGradient id="loaderFlameInner" cx="50%" cy="65%" r="50%">
-              <stop offset="0%" stop-color="#FFFDF0" />
-              <stop offset="35%" stop-color="#FDE047" />
-              <stop offset="75%" stop-color="#EA580C" />
-              <stop offset="100%" stop-color="#B91C1C" stop-opacity="0" />
+              <stop offset="0%" stopColor="#FFFDF0" />
+              <stop offset="35%" stopColor="#FDE047" />
+              <stop offset="75%" stopColor="#EA580C" />
+              <stop offset="100%" stopColor="#B91C1C" stopOpacity="0" />
             </radialGradient>
 
             <radialGradient id="loaderAura" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#FDE68A" stop-opacity="0.6" />
-              <stop offset="60%" stop-color="#FDE68A" stop-opacity="0.2" />
-              <stop offset="100%" stop-color="#FDE68A" stop-opacity="0" />
+              <stop offset="0%" stopColor="#FDE68A" stopOpacity="0.6" />
+              <stop offset="60%" stopColor="#FDE68A" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#FDE68A" stopOpacity="0" />
             </radialGradient>
 
             {/* Clip path inside the tumbler vessel */}
