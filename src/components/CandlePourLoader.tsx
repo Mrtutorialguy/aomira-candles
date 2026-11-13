@@ -8,21 +8,20 @@ export function CandlePourLoader() {
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [isMounted, setIsMounted] = useState(true);
 
-  // Manage animation progression
+  // Manage 2D animation progression
   useEffect(() => {
-    // Check if user already saw intro this session to keep returning visits fast
+    // Keep returning visits instant
     const hasSeen = sessionStorage.getItem("aomira_intro_seen");
     if (hasSeen === "true") {
       setIsMounted(false);
       return;
     }
 
-    // Disable background scroll during loader
+    // Freeze scroll while preloader is active
     document.body.style.overflow = "hidden";
 
-    // Progress pour fill
     let start: number | null = null;
-    const duration = 1200; // 1.2s to fill
+    const duration = 1350; // 1.35s pour fill
 
     let animFrame: number;
     const animateFill = (time: number) => {
@@ -40,23 +39,21 @@ export function CandlePourLoader() {
 
     animFrame = requestAnimationFrame(animateFill);
 
-    // Timeline steps
     const timer1 = setTimeout(() => {
       setPhase("lighting");
-    }, 1500);
+    }, 1600);
 
     const timer2 = setTimeout(() => {
       setPhase("complete");
       setIsFadingOut(true);
       sessionStorage.setItem("aomira_intro_seen", "true");
-    }, 2300);
+    }, 2400);
 
     const timer3 = setTimeout(() => {
       setIsMounted(false);
       document.body.style.overflow = "";
-    }, 2850);
+    }, 2950);
 
-    // Escape key to skip immediately
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" || e.key === " ") {
         handleSkip();
@@ -80,315 +77,318 @@ export function CandlePourLoader() {
     setTimeout(() => {
       setIsMounted(false);
       document.body.style.overflow = "";
-    }, 400);
+    }, 350);
   };
 
   if (!isMounted) return null;
 
-  // Calculate wax pool height in SVG units (max height 88px, bottom at y=260)
-  const maxWaxHeight = 84;
+  // Geometry calculations for 2D candle fill (inner height 115px, bottom at y=249)
+  const maxWaxHeight = 115;
   const currentWaxHeight = (fillProgress / 100) * maxWaxHeight;
-  const waxY = 260 - currentWaxHeight;
-  const isPouring = phase === "pouring" && fillProgress < 95;
+  const waxY = 249 - currentWaxHeight;
+  const isPouring = phase === "pouring" && fillProgress < 98;
   const isFlameLit = phase === "lighting" || phase === "complete";
+
+  // Formatted counter string: "001" to "100"
+  const counterNumber = Math.round(fillProgress);
+  const formattedCounter =
+    counterNumber < 10
+      ? `00${counterNumber}`
+      : counterNumber < 100
+      ? `0${counterNumber}`
+      : "100";
 
   return (
     <div
       role="progressbar"
-      aria-label="Pouring handcrafted candle"
-      aria-valuenow={Math.round(fillProgress)}
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#fbf8f2] transition-opacity duration-500 ease-out ${
-        isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
+      aria-label="Aomira Atelier candle preparation sequence"
+      aria-valuenow={counterNumber}
+      className={`fixed inset-0 z-50 flex flex-col justify-between bg-[#0a0a0a] text-white p-6 sm:p-10 select-none overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        isFadingOut ? "opacity-0 pointer-events-none scale-[1.02]" : "opacity-100 scale-100"
       }`}
     >
-      {/* Subtle organic background grain */}
-      <div className="absolute inset-0 bg-grain opacity-60 pointer-events-none" />
+      {/* Subtle tactile grain overlay */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.035] mix-blend-screen"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+        }}
+      />
 
-      {/* Skip button */}
-      <button
-        type="button"
-        onClick={handleSkip}
-        className="absolute top-6 right-6 px-3.5 py-1.5 rounded-full border border-[#382c22]/15 bg-white/70 backdrop-blur-xs text-[11px] font-medium text-[#6b635c] hover:bg-[#f4eee3] hover:text-[#231f1c] transition-colors"
-      >
-        Skip Intro
-      </button>
-
-      {/* Animation Canvas */}
-      <div className="relative w-72 h-80 flex items-center justify-center">
-        <svg
-          viewBox="0 0 320 340"
-          className="w-full h-full drop-shadow-sm select-none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            {/* Molten wax stream gradient */}
-            <linearGradient id="moltenStream" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#FCD34D" />
-              <stop offset="45%" stopColor="#F59E0B" />
-              <stop offset="85%" stopColor="#D97706" />
-              <stop offset="100%" stopColor="#C4682B" />
-            </linearGradient>
-
-            {/* Filled wax pool gradient */}
-            <linearGradient id="waxPool" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#FCE7B2" />
-              <stop offset="25%" stopColor="#F5B963" />
-              <stop offset="70%" stopColor="#D97736" />
-              <stop offset="100%" stopColor="#9A4518" />
-            </linearGradient>
-
-            {/* Amber glass vessel gradient */}
-            <linearGradient id="vesselGlass" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#6E3816" stopOpacity="0.35" />
-              <stop offset="20%" stopColor="#A55420" stopOpacity="0.15" />
-              <stop offset="80%" stopColor="#A55420" stopOpacity="0.15" />
-              <stop offset="100%" stopColor="#6E3816" stopOpacity="0.35" />
-            </linearGradient>
-
-            {/* Flame gradients */}
-            <radialGradient id="loaderFlameInner" cx="50%" cy="65%" r="50%">
-              <stop offset="0%" stopColor="#FFFDF0" />
-              <stop offset="35%" stopColor="#FDE047" />
-              <stop offset="75%" stopColor="#EA580C" />
-              <stop offset="100%" stopColor="#B91C1C" stopOpacity="0" />
-            </radialGradient>
-
-            <radialGradient id="loaderAura" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#FDE68A" stopOpacity="0.6" />
-              <stop offset="60%" stopColor="#FDE68A" stopOpacity="0.2" />
-              <stop offset="100%" stopColor="#FDE68A" stopOpacity="0" />
-            </radialGradient>
-
-            {/* Clip path inside the tumbler vessel */}
-            <clipPath id="tumblerInterior">
-              <path d="M 116 166 L 119 256 C 119 264 127 270 137 270 L 183 270 C 193 270 201 264 201 256 L 204 166 Z" />
-            </clipPath>
-          </defs>
-
-          {/* Candlelight warm glowing aura */}
-          {isFlameLit && (
-            <circle
-              cx="160"
-              cy="125"
-              r="75"
-              fill="url(#loaderAura)"
-              className="animate-aura-pulse"
-            />
-          )}
-
-          {/* Glass Vessel Base Shadow */}
-          <ellipse
-            cx="160"
-            cy="274"
-            rx="46"
-            ry="7"
-            fill="#231F1C"
-            opacity="0.08"
-          />
-
-          {/* Molten Wax Pouring Pitcher (Tilting smoothly) */}
-          <g
-            className="transition-transform duration-500 ease-out"
-            style={{
-              transform: isPouring
-                ? "translate(0px, 0px) rotate(26deg)"
-                : "translate(-8px, -14px) rotate(0deg)",
-              transformOrigin: "70px 60px",
-            }}
-          >
-            {/* Pitcher body (Warm burnished brass) */}
-            <path
-              d="M 45 42 L 85 42 L 80 84 C 80 88 74 92 65 92 C 56 92 50 88 50 84 Z"
-              fill="#9C6B30"
-              stroke="#5C3B14"
-              stroke-width="1.5"
-            />
-            {/* Pitcher Spout */}
-            <path
-              d="M 83 44 L 104 54 L 84 62 Z"
-              fill="#B8803B"
-              stroke="#5C3B14"
-              stroke-width="1.2"
-            />
-            {/* Pitcher Handle */}
-            <path
-              d="M 46 50 C 30 50 30 76 48 80"
-              fill="none"
-              stroke="#5C3B14"
-              stroke-width="2.5"
-              stroke-linecap="round"
-            />
-          </g>
-
-          {/* Molten Wax Stream (Pouring down) */}
-          {isPouring && (
-            <g className="animate-molten-shimmer">
-              {/* Core golden stream */}
-              <path
-                d="M 103 62 Q 138 95 160 170 L 160 260 L 158 260 Q 135 98 101 64 Z"
-                fill="url(#moltenStream)"
-                opacity="0.95"
-              />
-              {/* Highlight stream accent */}
-              <path
-                d="M 103 63 Q 137 96 159 180"
-                fill="none"
-                stroke="#FFFBEB"
-                stroke-width="1.2"
-                stroke-linecap="round"
-                opacity="0.8"
-              />
-            </g>
-          )}
-
-          {/* Glass Tumbler Vessel (Outer Wall) */}
-          <path
-            d="M 112 162 L 116 258 C 117 268 126 274 137 274 L 183 274 C 194 274 203 268 204 258 L 208 162 Z"
-            fill="url(#vesselGlass)"
-            stroke="#8A471C"
-            stroke-width="1.8"
-            stroke-linejoin="round"
-          />
-
-          {/* Liquid Wax Rising Inside Jar (Clipped to interior) */}
-          <g clipPath="url(#tumblerInterior)">
-            {/* Liquid Wax Body */}
-            <rect
-              x="110"
-              y={waxY}
-              width="100"
-              height={currentWaxHeight + 20}
-              fill="url(#waxPool)"
-              className="transition-all duration-75 ease-linear"
-            />
-
-            {/* Liquid Meniscus / Wax Surface Ellipse */}
-            {fillProgress > 4 && (
-              <ellipse
-                cx="160"
-                cy={waxY}
-                rx="42"
-                ry="5"
-                fill="#FEF3C7"
-                stroke="#D97706"
-                stroke-width="0.8"
-              />
-            )}
-          </g>
-
-          {/* Tumbler Glass Rim */}
-          <ellipse
-            cx="160"
-            cy="162"
-            rx="48"
-            ry="9"
-            fill="none"
-            stroke="#6E3816"
-            stroke-width="2"
-          />
-          <ellipse
-            cx="160"
-            cy="162"
-            rx="45"
-            ry="7.5"
-            fill="none"
-            stroke="#E69C5C"
-            stroke-width="1"
-            opacity="0.6"
-          />
-
-          {/* Wooden Timber Wick in the center */}
-          <rect
-            x="157"
-            y="142"
-            width="6"
-            height="115"
-            rx="1"
-            fill="#3F2618"
-            stroke="#26170E"
-            stroke-width="0.75"
-          />
-          {/* Timber wick grain lines */}
-          <line x1="159" y1="144" x2="159" y2="162" stroke="#5E3821" stroke-width="0.75" />
-          <line x1="161" y1="144" x2="161" y2="162" stroke="#26170E" stroke-width="0.75" />
-
-          {/* Flame (Ignites once wax is poured) */}
-          {isFlameLit && (
-            <g
-              className="animate-flame-flicker"
-              style={{
-                transformOrigin: "160px 144px",
-              }}
-            >
-              {/* Flame Outer & Core */}
-              <path
-                d="M 160 102 C 172 120 174 135 160 144 C 146 135 148 120 160 102 Z"
-                fill="url(#loaderFlameInner)"
-              />
-              {/* Inner blue-white oxygen root */}
-              <ellipse cx="160" cy="142" rx="3.5" ry="3" fill="#60A5FA" opacity="0.8" />
-              <ellipse cx="160" cy="141" rx="2" ry="2" fill="#FFFFFF" />
-            </g>
-          )}
-
-          {/* Vessel Label "AOMIRA" */}
-          <rect
-            x="132"
-            y="198"
-            width="56"
-            height="46"
-            rx="2"
-            fill="#FDFBF7"
-            stroke="#6E3816"
-            stroke-width="0.8"
-            opacity="0.95"
-          />
-          <text
-            x="160"
-            y="215"
-            text-anchor="middle"
-            font-family="Georgia, serif"
-            font-size="7"
-            letter-spacing="2.5"
-            fill="#5A3215"
-            font-weight="bold"
-          >
-            AOMIRA
-          </text>
-          <line x1="142" y1="220" x2="178" y2="220" stroke="#C4682B" stroke-width="0.6" />
-          <text
-            x="160"
-            y="232"
-            text-anchor="middle"
-            font-family="sans-serif"
-            font-size="4.8"
-            letter-spacing="0.8"
-            fill="#80624E"
-          >
-            NO. 01 / BOTANICAL
-          </text>
-        </svg>
+      {/* Architectural Corner Crosshair Crop Marks */}
+      <div className="pointer-events-none absolute top-4 left-4 font-mono text-[11px] text-neutral-600 leading-none">
+        +
+      </div>
+      <div className="pointer-events-none absolute top-4 right-4 font-mono text-[11px] text-neutral-600 leading-none">
+        +
+      </div>
+      <div className="pointer-events-none absolute bottom-4 left-4 font-mono text-[11px] text-neutral-600 leading-none">
+        +
+      </div>
+      <div className="pointer-events-none absolute bottom-4 right-4 font-mono text-[11px] text-neutral-600 leading-none">
+        +
       </div>
 
-      {/* Brand & Progress Text */}
-      <div className="mt-4 text-center space-y-2">
-        <h2 className="font-serif text-xl sm:text-2xl tracking-[0.25em] text-[#231f1c] uppercase font-semibold">
-          Aomira
-        </h2>
-        <p className="text-xs tracking-wider uppercase text-[#8c7462] h-4 transition-opacity duration-300">
-          {phase === "pouring" && "Tempering Botanical Soy Wax..."}
-          {phase === "setting" && "Setting Crackling Timber Wick..."}
-          {(phase === "lighting" || phase === "complete") && "Lighting First Burn..."}
-        </p>
+      {/* Top Header Bar */}
+      <header className="relative z-10 flex items-center justify-between text-[11px] font-mono uppercase tracking-[0.2em] text-neutral-400">
+        <div className="flex items-center space-x-3">
+          <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+          <span className="text-white font-medium">AOMIRA ATELIER</span>
+          <span className="text-neutral-600 hidden sm:inline">&bull;</span>
+          <span className="hidden sm:inline text-neutral-500">STUDIO BATCH NO. 04</span>
+        </div>
 
-        {/* Minimalist progress bar */}
-        <div className="w-40 mx-auto h-0.5 bg-[#e8ded3] rounded-full overflow-hidden mt-3">
+        <button
+          type="button"
+          onClick={handleSkip}
+          className="px-3.5 py-1.5 rounded-full border border-white/20 hover:border-white text-neutral-300 hover:text-white transition-colors duration-200 text-[10px] tracking-widest uppercase focus:outline-none focus:ring-1 focus:ring-white"
+        >
+          [ ESC &bull; SKIP ]
+        </button>
+      </header>
+
+      {/* Center 2D Aesthetic Vector Canvas */}
+      <main className="relative z-10 my-auto flex flex-col items-center justify-center">
+        <div className="relative w-64 h-72 sm:w-72 sm:h-80 flex items-center justify-center">
+          <svg
+            viewBox="0 0 260 300"
+            className="w-full h-full select-none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              {/* Clip path matching the interior of the 2D glass tumbler */}
+              <clipPath id="candleInner2D">
+                <path d="M 76 111 L 76 242 C 76 247 80 249 86 249 L 174 249 C 180 249 184 247 184 242 L 184 111 Z" />
+              </clipPath>
+            </defs>
+
+            {/* Calibration measurement tick marks (Apothecary volume scale) */}
+            <g className="text-neutral-500 font-mono" stroke="#444444" strokeWidth="0.8">
+              {/* 240g mark (100%) */}
+              <line x1="64" y1="134" x2="74" y2="134" />
+              <text x="58" y="136" textAnchor="end" fill="#666666" fontSize="6.5" stroke="none" fontFamily="monospace">
+                240G
+              </text>
+
+              {/* 180g mark (75%) */}
+              <line x1="66" y1="162" x2="74" y2="162" />
+              <text x="58" y="164" textAnchor="end" fill="#666666" fontSize="6.5" stroke="none" fontFamily="monospace">
+                180G
+              </text>
+
+              {/* 120g mark (50%) */}
+              <line x1="64" y1="191" x2="74" y2="191" />
+              <text x="58" y="193" textAnchor="end" fill="#666666" fontSize="6.5" stroke="none" fontFamily="monospace">
+                120G
+              </text>
+
+              {/* 60g mark (25%) */}
+              <line x1="66" y1="220" x2="74" y2="220" />
+              <text x="58" y="222" textAnchor="end" fill="#666666" fontSize="6.5" stroke="none" fontFamily="monospace">
+                60G
+              </text>
+            </g>
+
+            {/* 2D Minimalist Pour Spout & Molten Stream */}
+            {isPouring && (
+              <g className="transition-opacity duration-300">
+                {/* 2D Crucible / Pouring Pitcher Silhouette */}
+                <path
+                  d="M 50 48 L 78 44 L 86 78 L 46 78 Z"
+                  fill="none"
+                  stroke="#FFFFFF"
+                  strokeWidth="1.2"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M 78 44 L 98 52 L 86 60 Z"
+                  fill="none"
+                  stroke="#FFFFFF"
+                  strokeWidth="1.2"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M 48 54 C 36 56 34 72 46 76"
+                  fill="none"
+                  stroke="#FFFFFF"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                />
+
+                {/* 2D Animated Flow Stream */}
+                <path
+                  d="M 98 52 Q 118 78 130 134"
+                  fill="none"
+                  stroke="#FFFFFF"
+                  strokeWidth="1.4"
+                  strokeDasharray="5 3"
+                  className="animate-stream-2d"
+                />
+              </g>
+            )}
+
+            {/* Center Timber Wick (Crisp vertical axis) */}
+            <line
+              x1="130"
+              y1="92"
+              x2="130"
+              y2="248"
+              stroke="#555555"
+              strokeWidth="1.5"
+              strokeLinecap="square"
+            />
+
+            {/* Rising 2D Wax Pool (Monochromatic solid white fill with clean meniscus) */}
+            <g clipPath="url(#candleInner2D)">
+              {fillProgress > 0 && (
+                <g>
+                  {/* Rising liquid wax body */}
+                  <rect
+                    x="70"
+                    y={waxY}
+                    width="120"
+                    height={currentWaxHeight + 10}
+                    fill="#FFFFFF"
+                  />
+                  {/* Top meniscus line */}
+                  <line
+                    x1="76"
+                    y1={waxY}
+                    x2="184"
+                    y2={waxY}
+                    stroke="#FFFFFF"
+                    strokeWidth="1.5"
+                  />
+                </g>
+              )}
+            </g>
+
+            {/* 2D Vessel Outline (Stark white architectural hairlines) */}
+            <path
+              d="M 75 110 L 75 242 C 75 248 80 250 86 250 L 174 250 C 180 250 185 248 185 242 L 185 110 Z"
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth="1.4"
+              strokeLinejoin="round"
+            />
+
+            {/* Top rim line */}
+            <line
+              x1="72"
+              y1="110"
+              x2="188"
+              y2="110"
+              stroke="#FFFFFF"
+              strokeWidth="1.4"
+            />
+
+            {/* 2D Minimalist Architectural Label on Vessel */}
+            <g>
+              <rect
+                x="93"
+                y="175"
+                width="74"
+                height="44"
+                fill="#0A0A0A"
+                stroke="#FFFFFF"
+                strokeWidth="1"
+                rx="2"
+              />
+              <text
+                x="130"
+                y="193"
+                textAnchor="middle"
+                fill="#FFFFFF"
+                fontFamily="Georgia, serif"
+                fontSize="8"
+                letterSpacing="3"
+                fontWeight="bold"
+              >
+                AOMIRA
+              </text>
+              <line
+                x1="106"
+                y1="198"
+                x2="154"
+                y2="198"
+                stroke="#444444"
+                strokeWidth="0.8"
+              />
+              <text
+                x="130"
+                y="209"
+                textAnchor="middle"
+                fill="#888888"
+                fontFamily="system-ui, sans-serif"
+                fontSize="5.5"
+                letterSpacing="1.2"
+              >
+                SLOW FLAME
+              </text>
+            </g>
+
+            {/* 2D Continuous Vector Line-Art Flame */}
+            {isFlameLit && (
+              <g className="animate-flame-2d" style={{ transformOrigin: "130px 92px" }}>
+                {/* 2D Teardrop Outline Flame */}
+                <path
+                  d="M 130 58 C 121 73 121 84 125 89 C 127 91.5 130 92 130 92 C 130 92 133 91.5 135 89 C 139 84 139 73 130 58 Z"
+                  fill="none"
+                  stroke="#FFFFFF"
+                  strokeWidth="1.4"
+                  strokeLinejoin="round"
+                />
+                {/* 2D Inner Core Hairline */}
+                <line
+                  x1="130"
+                  y1="75"
+                  x2="130"
+                  y2="86"
+                  stroke="#FFFFFF"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                />
+              </g>
+            )}
+          </svg>
+        </div>
+
+        {/* Brand Typographic Heading */}
+        <div className="text-center mt-3">
+          <h2 className="font-serif text-2xl sm:text-3xl tracking-[0.3em] text-white uppercase font-light">
+            A O M I R A
+          </h2>
+          <p className="font-mono text-[10px] tracking-[0.25em] text-neutral-400 uppercase mt-2">
+            {phase === "pouring" && "01 / POURING SUSTAINABLE SOY-COCONUT BLEND"}
+            {phase === "setting" && "02 / SETTING PURE BOTANICAL MATRIX"}
+            {phase === "lighting" && "03 / IGNITING CRACKLING TIMBER WICK"}
+            {phase === "complete" && "04 / ATELIER AMBIANCE READY"}
+          </p>
+        </div>
+      </main>
+
+      {/* Bottom Telemetry Bar */}
+      <footer className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-white/10 text-[11px] font-mono text-neutral-400">
+        <div className="flex items-center space-x-2 tracking-widest text-[10px]">
+          <span>45.5152° N, 122.6784° W</span>
+          <span className="text-neutral-700">&bull;</span>
+          <span>PORTLAND ATELIER</span>
+        </div>
+
+        {/* Minimalist 1px Precision Progress Line */}
+        <div className="w-52 sm:w-72 h-[1px] bg-neutral-800 relative overflow-hidden">
           <div
-            className="h-full bg-[#c4682b] transition-all duration-100 ease-linear rounded-full"
-            style={{ width: `${Math.min(100, fillProgress)}%` }}
+            className="h-full bg-white transition-all duration-100 ease-out"
+            style={{ width: `${fillProgress}%` }}
           />
         </div>
-      </div>
+
+        {/* 3-Digit Monospace Counter */}
+        <div className="tracking-widest text-neutral-300 font-medium">
+          [ {formattedCounter}% CURATED ]
+        </div>
+      </footer>
     </div>
   );
 }
