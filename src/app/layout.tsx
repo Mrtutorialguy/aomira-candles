@@ -4,6 +4,7 @@ import { CartProvider } from "@/lib/cartContext";
 import { Navbar } from "@/components/Navbar";
 import { CartDrawer } from "@/components/CartDrawer";
 import { Footer } from "@/components/Footer";
+import { CandlePourLoader } from "@/components/CandlePourLoader";
 
 export const metadata: Metadata = {
   title: "Aomira Candles | Botanical Wax & Artisanal Scents",
@@ -37,6 +38,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className="min-h-screen flex flex-col font-sans selection:bg-[#c4682b]/20 selection:text-[#231f1c]">
         <CartProvider>
+          <CandlePourLoader />
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
