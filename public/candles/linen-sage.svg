@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" width="100%" height="100%">
+  <defs>
+    <linearGradient id="boneGlass" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C7BFB5" />
+      <stop offset="30%" stop-color="#EBE5DC" />
+      <stop offset="60%" stop-color="#F5F0E8" />
+      <stop offset="100%" stop-color="#BDB5AA" />
+    </linearGradient>
+    <radialGradient id="flameInner" cx="50%" cy="65%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="40%" stop-color="#FDE047" />
+      <stop offset="85%" stop-color="#F97316" />
+      <stop offset="100%" stop-color="#EA580C" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FEF08A" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#FEF08A" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <circle cx="200" cy="115" r="90" fill="url(#aura)" />
+
+  <line x1="200" y1="135" x2="200" y2="155" stroke="#44403C" stroke-width="4" stroke-linecap="round" />
+  <path d="M200,88 C212,110 216,126 200,138 C184,126 188,110 200,88 Z" fill="url(#flameInner)" />
+
+  <ellipse cx="200" cy="165" rx="88" ry="16" fill="#F8FAFC" stroke="#78716C" stroke-width="2" />
+  <ellipse cx="200" cy="166" rx="80" ry="12" fill="#E2E8F0" />
+  <circle cx="200" cy="166" r="3" fill="#292524" />
+
+  <path d="M112,165 Q108,380 120,400 Q200,412 280,400 Q292,380 288,165 Z" fill="url(#boneGlass)" opacity="0.9" />
+  <ellipse cx="200" cy="400" rx="80" ry="12" fill="#78716C" />
+
+  <rect x="135" y="215" width="130" height="150" rx="2" fill="#FFFFFF" stroke="#57534E" stroke-width="1" />
+  <rect x="140" y="220" width="120" height="140" fill="none" stroke="#94A3B8" stroke-width="0.8" />
+  
+  <text x="200" y="246" text-anchor="middle" font-family="Georgia, serif" font-size="9" letter-spacing="3" fill="#475569">AOMIRA CANDLES</text>
+  <line x1="165" y1="254" x2="235" y2="254" stroke="#64748B" stroke-width="0.75" />
+  <text x="200" y="278" text-anchor="middle" font-family="Georgia, serif" font-size="11.5" font-weight="bold" fill="#1E293B">LINEN &amp; WHITE SAGE</text>
+  <text x="200" y="295" text-anchor="middle" font-family="sans-serif" font-size="8" letter-spacing="1.5" fill="#64748B">NO. 04 / FROSTED TUMBLER</text>
+  <text x="200" y="325" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#64748B">PURE MIDWESTERN SOY</text>
+  <text x="200" y="340" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#64748B">8.5 OZ · 50 HR BURN TIME</text>
+</svg>

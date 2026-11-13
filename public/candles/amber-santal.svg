@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" width="100%" height="100%">
+  <defs>
+    <linearGradient id="amberJar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#5A2E10" />
+      <stop offset="25%" stop-color="#8F4818" />
+      <stop offset="50%" stop-color="#C4682B" />
+      <stop offset="75%" stop-color="#8F4818" />
+      <stop offset="100%" stop-color="#5A2E10" />
+    </linearGradient>
+    <radialGradient id="flameInner" cx="50%" cy="65%" r="50%">
+      <stop offset="0%" stop-color="#FFF6D6" />
+      <stop offset="40%" stop-color="#FFBF47" />
+      <stop offset="85%" stop-color="#E85D04" />
+      <stop offset="100%" stop-color="#D9381E" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFD68A" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#FFD68A" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background Warm Aura -->
+  <circle cx="200" cy="115" r="90" fill="url(#aura)" />
+
+  <!-- Wooden Wick & Flame -->
+  <line x1="200" y1="135" x2="200" y2="155" stroke="#3D2619" stroke-width="4" stroke-linecap="round" />
+  <path d="M200,90 C212,112 216,128 200,140 C184,128 188,112 200,90 Z" fill="url(#flameInner)" />
+
+  <!-- Glass Rim / Wax Surface -->
+  <ellipse cx="200" cy="165" rx="88" ry="16" fill="#F4EDE2" stroke="#4A250D" stroke-width="2" />
+  <ellipse cx="200" cy="166" rx="80" ry="12" fill="#E6D7C3" />
+  <circle cx="200" cy="166" r="3" fill="#2E1B10" />
+
+  <!-- Jar Body -->
+  <path d="M112,165 Q108,380 120,400 Q200,412 280,400 Q292,380 288,165 Z" fill="url(#amberJar)" opacity="0.95" />
+  <ellipse cx="200" cy="400" rx="80" ry="12" fill="#42200A" />
+
+  <!-- Artisan Label -->
+  <rect x="135" y="215" width="130" height="150" rx="2" fill="#FDFBF7" stroke="#3D2B1F" stroke-width="1" />
+  <rect x="140" y="220" width="120" height="140" fill="none" stroke="#D1C7BD" stroke-width="0.8" />
+  
+  <text x="200" y="246" text-anchor="middle" font-family="Georgia, serif" font-size="9" letter-spacing="3" fill="#6B5E55">AOMIRA CANDLES</text>
+  <line x1="165" y1="254" x2="235" y2="254" stroke="#C4682B" stroke-width="0.75" />
+  <text x="200" y="278" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#241B15">AMBER SANTAL</text>
+  <text x="200" y="295" text-anchor="middle" font-family="sans-serif" font-size="8" letter-spacing="1.5" fill="#786B61">NO. 01 / BOTANICAL WAX</text>
+  <text x="200" y="325" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#8C7D73">SOY &amp; COCONUT BLEND</text>
+  <text x="200" y="340" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#8C7D73">9 OZ · 55 HR BURN TIME</text>
+</svg>

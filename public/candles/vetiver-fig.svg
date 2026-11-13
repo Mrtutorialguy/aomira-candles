@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" width="100%" height="100%">
+  <defs>
+    <linearGradient id="charcoalCeramic" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#212121" />
+      <stop offset="35%" stop-color="#3A3837" />
+      <stop offset="65%" stop-color="#2D2B2A" />
+      <stop offset="100%" stop-color="#191919" />
+    </linearGradient>
+    <radialGradient id="flameInner" cx="50%" cy="65%" r="50%">
+      <stop offset="0%" stop-color="#FFF8E7" />
+      <stop offset="40%" stop-color="#FFAE42" />
+      <stop offset="85%" stop-color="#E25822" />
+      <stop offset="100%" stop-color="#B22222" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFDE99" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#FFDE99" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <circle cx="200" cy="115" r="90" fill="url(#aura)" />
+
+  <line x1="200" y1="135" x2="200" y2="155" stroke="#1F1B18" stroke-width="4" stroke-linecap="round" />
+  <path d="M200,88 C212,110 216,126 200,138 C184,126 188,110 200,88 Z" fill="url(#flameInner)" />
+
+  <ellipse cx="200" cy="165" rx="88" ry="16" fill="#EDE4D6" stroke="#2B2826" stroke-width="2" />
+  <ellipse cx="200" cy="166" rx="80" ry="12" fill="#DFD4C2" />
+  <circle cx="200" cy="166" r="3" fill="#1C1815" />
+
+  <path d="M112,165 Q108,380 120,400 Q200,412 280,400 Q292,380 288,165 Z" fill="url(#charcoalCeramic)" />
+  <ellipse cx="200" cy="400" rx="80" ry="12" fill="#141414" />
+
+  <!-- Label with sage tone -->
+  <rect x="135" y="215" width="130" height="150" rx="2" fill="#F4F1EA" stroke="#2B2826" stroke-width="1" />
+  <rect x="140" y="220" width="120" height="140" fill="none" stroke="#6F7D67" stroke-width="0.8" />
+  
+  <text x="200" y="246" text-anchor="middle" font-family="Georgia, serif" font-size="9" letter-spacing="3" fill="#586352">AOMIRA CANDLES</text>
+  <line x1="165" y1="254" x2="235" y2="254" stroke="#485343" stroke-width="0.75" />
+  <text x="200" y="278" text-anchor="middle" font-family="Georgia, serif" font-size="12.5" font-weight="bold" fill="#1F241D">VETIVER &amp; FIG</text>
+  <text x="200" y="295" text-anchor="middle" font-family="sans-serif" font-size="8" letter-spacing="1.5" fill="#697563">NO. 02 / CERAMIC CROCK</text>
+  <text x="200" y="325" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#788472">COCONUT APRICOT WAX</text>
+  <text x="200" y="340" text-anchor="middle" font-family="sans-serif" font-size="7.5" fill="#788472">10 OZ · 60 HR BURN TIME</text>
+</svg>

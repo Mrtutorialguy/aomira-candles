@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #fdfbf7;
+  --bg-secondary: #f4eee3;
+  --bg-card: #ffffff;
+  --text-primary: #231f1c;
+  --text-muted: #6b635c;
+  --border-light: rgba(56, 44, 34, 0.08);
+  --border-subtle: rgba(56, 44, 34, 0.14);
+  --accent-amber: #c4682b;
+  --accent-gold: #b38528;
+  --accent-charcoal: #1c1815;
+}
+
+html,
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: clip;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle organic grain overlay */
+.bg-grain {
+  background-image: radial-gradient(rgba(35, 31, 28, 0.04) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Flame glow aura for artisanal candles */
+.flame-glow {
+  box-shadow: 0 0 35px -8px rgba(196, 104, 43, 0.25);
+}
