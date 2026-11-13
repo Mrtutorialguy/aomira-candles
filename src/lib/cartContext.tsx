@@ -25,6 +25,21 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+function isValidCartItem(item: any): item is CartItem {
+  return (
+    typeof item === "object" &&
+    item !== null &&
+    typeof item.quantity === "number" &&
+    item.quantity > 0 &&
+    Number.isInteger(item.quantity) &&
+    typeof item.product === "object" &&
+    item.product !== null &&
+    typeof item.product.id === "string" &&
+    typeof item.product.price === "number" &&
+    typeof item.product.name === "string"
+  );
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -35,10 +50,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
     try {
       const stored = localStorage.getItem("aomira_cart");
       if (stored) {
-        setItems(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.every(isValidCartItem)) {
+          setItems(parsed);
+        } else {
+          localStorage.removeItem("aomira_cart");
+        }
       }
     } catch {
-      // ignore storage errors
+      localStorage.removeItem("aomira_cart");
     }
   }, []);
 
@@ -53,16 +73,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items, isMounted]);
 
   const addToCart = (product: Product, quantity = 1) => {
+    const validQty = Math.max(1, Math.floor(quantity));
     setItems((prev) => {
       const existing = prev.find((item) => item.product.id === product.id);
       if (existing) {
         return prev.map((item) =>
           item.product.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
+            ? { ...item, quantity: item.quantity + validQty }
             : item
         );
       }
-      return [...prev, { product, quantity }];
+      return [...prev, { product, quantity: validQty }];
     });
     setIsCartOpen(true);
   };
@@ -76,9 +97,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       removeFromCart(productId);
       return;
     }
+    const cleanQty = Math.floor(quantity);
     setItems((prev) =>
       prev.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
+        item.product.id === productId ? { ...item, quantity: cleanQty } : item
       )
     );
   };

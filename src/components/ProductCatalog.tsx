@@ -35,9 +35,9 @@ export function ProductCatalog({ initialProducts }: ProductCatalogProps) {
           <div className="flex flex-wrap items-center gap-2">
             {[
               { id: "all", label: "All Blends" },
-              { id: "soy", label: "Soy Wax" },
-              { id: "beeswax", label: "Pure Beeswax" },
-              { id: "coconut", label: "Coconut Apricot" },
+              { id: "soy", label: "Soy Blends" },
+              { id: "beeswax", label: "Beeswax Blends" },
+              { id: "coconut", label: "Coconut Blends" },
             ].map((tab) => (
               <button
                 key={tab.id}

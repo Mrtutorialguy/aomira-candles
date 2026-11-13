@@ -16,7 +16,7 @@ export function Footer() {
               </span>
             </div>
             <p className="text-xs text-[#a89f97] max-w-sm leading-relaxed">
-              Botanical candle studio dedicated to slow living. Hand-poured using 100% plant-based waxes, crackling timber wicks, and clean fragrance architecture.
+              Botanical candle studio dedicated to slow living. Hand-poured using pure botanical and natural waxes, crackling timber wicks, and clean fragrance architecture.
             </p>
           </div>
 
@@ -41,7 +41,7 @@ export function Footer() {
 
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#7d746d] gap-3">
           <p>&copy; {new Date().getFullYear()} Aomira Candles Studio. All rights reserved.</p>
-          <p>Hand-poured with pure botanicals and crackling wooden wicks.</p>
+          <p>Hand-poured with pure natural waxes and crackling wooden wicks.</p>
         </div>
       </div>
     </footer>

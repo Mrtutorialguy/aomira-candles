@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { CreateOrderSchema } from "@/lib/schemas";
 import { CANDLE_PRODUCTS } from "@/lib/products";
+import fs from "fs/promises";
+import path from "path";
 
-// In-memory order log for runtime demonstration
-const ordersStore: Array<{
+interface StoredOrder {
   id: string;
   customerName: string;
   email: string;
+  shippingAddress: {
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
   items: Array<{
     productId: string;
     name: string;
@@ -20,7 +28,41 @@ const ordersStore: Array<{
   total: number;
   createdAt: string;
   status: string;
-}> = [];
+}
+
+// In-memory cache + file-backed persistence
+let memoryOrders: StoredOrder[] = [];
+
+async function getStoragePath(): Promise<string> {
+  const primaryDir = path.join(process.cwd(), "data");
+  try {
+    await fs.mkdir(primaryDir, { recursive: true });
+    return path.join(primaryDir, "orders.json");
+  } catch {
+    const tmpDir = path.join("/tmp", "aomira_data");
+    await fs.mkdir(tmpDir, { recursive: true });
+    return path.join(tmpDir, "orders.json");
+  }
+}
+
+async function persistOrder(order: StoredOrder) {
+  memoryOrders.push(order);
+  try {
+    const filePath = await getStoragePath();
+    let current: StoredOrder[] = [];
+    try {
+      const content = await fs.readFile(filePath, "utf-8");
+      current = JSON.parse(content);
+    } catch {
+      current = [];
+    }
+    current.push(order);
+    await fs.writeFile(filePath, JSON.stringify(current, null, 2), "utf-8");
+  } catch (err) {
+    // Keep in memory if filesystem write is restricted
+    console.error("Order persistence warning:", err);
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -77,7 +119,7 @@ export async function POST(request: NextRequest) {
       100 + Math.random() * 900
     )}`;
 
-    const newOrder = {
+    const newOrder: StoredOrder = {
       id: orderId,
       customerName,
       email,
@@ -91,7 +133,7 @@ export async function POST(request: NextRequest) {
       status: "confirmed",
     };
 
-    ordersStore.push(newOrder);
+    await persistOrder(newOrder);
 
     return NextResponse.json(
       {
@@ -114,9 +156,20 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
-  return NextResponse.json({
-    success: true,
-    ordersCount: ordersStore.length,
-    recentOrders: ordersStore.slice(-5),
-  });
+  try {
+    const filePath = await getStoragePath();
+    const content = await fs.readFile(filePath, "utf-8");
+    const stored = JSON.parse(content);
+    return NextResponse.json({
+      success: true,
+      ordersCount: stored.length,
+      recentOrders: stored.slice(-5),
+    });
+  } catch {
+    return NextResponse.json({
+      success: true,
+      ordersCount: memoryOrders.length,
+      recentOrders: memoryOrders.slice(-5),
+    });
+  }
 }

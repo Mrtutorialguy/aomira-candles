@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useCart } from "@/lib/cartContext";
 import { X, Trash2, Plus, Minus, ArrowRight, CheckCircle, ShieldCheck } from "lucide-react";
@@ -33,6 +33,25 @@ export function CartDrawer() {
     postalCode: "",
     country: "United States",
   });
+
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!isCartOpen) return;
+
+    // Focus close button on open
+    closeButtonRef.current?.focus();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsCartOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isCartOpen, setIsCartOpen]);
 
   if (!isCartOpen) return null;
 
@@ -94,7 +113,12 @@ export function CartDrawer() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end">
+    <div
+      className="fixed inset-0 z-50 flex justify-end"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Shopping Basket"
+    >
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
@@ -103,7 +127,10 @@ export function CartDrawer() {
       />
 
       {/* Drawer */}
-      <div className="relative w-full max-w-md bg-[#fdfbf7] h-full shadow-2xl flex flex-col z-10 border-l border-[#382c22]/15">
+      <div
+        ref={drawerRef}
+        className="relative w-full max-w-md bg-[#fdfbf7] h-full shadow-2xl flex flex-col z-10 border-l border-[#382c22]/15"
+      >
         {/* Header */}
         <div className="p-4 sm:p-5 border-b border-[#382c22]/10 flex items-center justify-between bg-white">
           <div className="flex items-center gap-2">
@@ -114,9 +141,10 @@ export function CartDrawer() {
             </h2>
           </div>
           <button
+            ref={closeButtonRef}
             type="button"
             onClick={closeDrawer}
-            className="p-1.5 rounded-full hover:bg-[#f4eee3] text-[#5a524a] transition-colors"
+            className="p-1.5 rounded-full hover:bg-[#f4eee3] text-[#5a524a] transition-colors focus:outline-none focus:ring-2 focus:ring-[#c4682b]"
             aria-label="Close cart drawer"
           >
             <X className="w-5 h-5" />
